@@ -8,7 +8,7 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchProfiles = async () => {
       try {
-        const response = await axios.get('https://your-backend-url.com/api/profiles', {
+        const response = await axios.get('https://insighta-backend.vercel.app/api/profiles', {
           headers: { 'X-API-Version': '1' },
           withCredentials: true // MANDATORY for HTTP-only cookies
         });
