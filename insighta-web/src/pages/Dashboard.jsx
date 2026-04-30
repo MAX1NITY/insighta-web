@@ -1,53 +1,50 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 const Dashboard = () => {
-  const [profiles, setProfiles] = useState([]);
+  const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchProfiles = async () => {
+    const fetchStats = async () => {
       try {
-        const response = await axios.get('https://user-profiler-api.vercel.app/', {
-          headers: { 'X-API-Version': '1' },
-          withCredentials: true // MANDATORY for HTTP-only cookies
-        });
-        setProfiles(response.data.data);
+        const res = await axios.get(
+          'https://user-profiler-api.vercel.app/api/profiles',
+          {
+            headers: { 'X-API-Version': '1' },
+            withCredentials: true
+          }
+        );
+        setStats({ total: res.data.total });
       } catch (err) {
-        console.error("Not authorized or session expired");
-        // Optional: window.location.href = '/';
+        console.error('Not authorized or session expired');
+        if (err.response?.status === 401) navigate('/');
       } finally {
         setLoading(false);
       }
     };
-    fetchProfiles();
+    fetchStats();
   }, []);
 
-  if (loading) return <p>Loading profiles...</p>;
+  if (loading) return <p>Loading...</p>;
 
   return (
     <div style={{ padding: '20px' }}>
-      <h2>Profile Intelligence Dashboard</h2>
-      <table border="1" cellPadding="10" style={{ width: '100%', borderCollapse: 'collapse' }}>
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Gender</th>
-            <th>Age</th>
-            <th>Country</th>
-          </tr>
-        </thead>
-        <tbody>
-          {profiles.map(p => (
-            <tr key={p.id}>
-              <td>{p.name}</td>
-              <td>{p.gender}</td>
-              <td>{p.age}</td>
-              <td>{p.country_name}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <h2>Insighta Labs+ Dashboard</h2>
+
+      {/* Basic metrics */}
+      <div style={{ marginBottom: '30px' }}>
+        <p>Total Profiles: <strong>{stats?.total ?? 0}</strong></p>
+      </div>
+
+      {/* Navigation */}
+      <div style={{ display: 'flex', gap: '10px' }}>
+        <button onClick={() => navigate('/profiles')}>View Profiles</button>
+        <button onClick={() => navigate('/search')}>Search</button>
+        <button onClick={() => navigate('/account')}>My Account</button>
+      </div>
     </div>
   );
 };

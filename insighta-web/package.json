@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "lint": "eslint .",
+    "lint": "eslint . --ext .js,.jsx --ignore-path .gitignore",
+  "test": "echo \"No tests yet\" && exit 0",
     "preview": "vite preview"
   },
   "dependencies": {
