@@ -1,7 +1,7 @@
 const Login = () => {
   const handleLogin = () => {
     // Redirect to your BACKEND's GitHub auth route
-    window.location.href = `https://your-backend-url.com/auth/github?platform=web`;
+    window.location.href = `https://user-profiler-api.vercel.app/`;
   };
 
   return (
