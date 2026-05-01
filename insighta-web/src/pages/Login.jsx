@@ -1,7 +1,10 @@
 const Login = () => {
   const handleLogin = () => {
+    const state = crypto.randomUUID();
+
+    sessionStorage.setItem('oauth_state', state);
     // Redirect to your BACKEND's GitHub auth route
-    window.location.href = `https://user-profiler-api.vercel.app/auth/github`;
+    window.location.href = `https://user-profiler-api.vercel.app/auth/github?state=${state}`;
   };
 
   return (
